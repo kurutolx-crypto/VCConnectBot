@@ -1,0 +1,17 @@
+services:
+  vcconnectbot:
+    container_name: vcconnectbot
+    build:
+      context: .
+      dockerfile: VCConnectBot/Dockerfile
+      args:
+        BUILD_CONFIGURATION: Release
+    env_file:
+      - .env
+    environment:
+      ASPNETCORE_URLS: http://+:8080
+      DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: "1"
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+    init: true

@@ -1,0 +1,14 @@
+# Build output
+**/bin/
+**/obj/
+publish/
+
+# Local secrets
+.env
+.env.*
+!.env.example
+*.user
+*.suo
+
+# Visual Studio
+.vs/

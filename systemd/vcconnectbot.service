@@ -1,0 +1,23 @@
+[Unit]
+Description=VCConnectBot Discord voice relay
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=exec
+User=vcconnectbot
+Group=vcconnectbot
+WorkingDirectory=/opt/vcconnectbot
+ExecStart=/usr/bin/dotnet /opt/vcconnectbot/VCConnectBot.dll
+EnvironmentFile=/etc/vcconnectbot/vcconnectbot.env
+Restart=no
+
+# Tokens must not appear in command-line arguments or logs.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/vcconnectbot
+
+[Install]
+WantedBy=multi-user.target

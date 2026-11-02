@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="VCConnectBot.Tests/VCConnectBot.Tests.csproj" />
+  <Project Path="VCConnectBot/VCConnectBot.csproj" />
+</Solution>
