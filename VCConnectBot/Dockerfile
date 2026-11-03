@@ -3,7 +3,7 @@
 # このステージは、VS から高速モードで実行するときに使用されます (デバッグ構成の既定値)
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 RUN apt-get update \
-	&& apt-get install -y --no-install-recommends libopus0 libsodium23 \
+	&& apt-get install -y --no-install-recommends libopus-dev libsodium-dev \
 	&& rm -rf /var/lib/apt/lists/*
 USER $APP_UID
 WORKDIR /app
