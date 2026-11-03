@@ -1,4 +1,5 @@
 using DSharpPlus;
+using DSharpPlus.EventArgs;
 using DSharpPlus.SlashCommands;
 using DSharpPlus.VoiceNext;
 using Microsoft.Extensions.Hosting;
@@ -98,6 +99,28 @@ public sealed class DiscordBotHost : IHostedService, IAsyncDisposable
             AudioFormat = new AudioFormat(audioOptions.SampleRate, audioOptions.Channels, VoiceApplication.Voice),
             PacketQueueSize = audioOptions.MaxBufferedFrames
         });
+        client.VoiceStateUpdated += (_, eventArgs) =>
+        {
+            if (client.CurrentUser?.Id == eventArgs.User.Id)
+            {
+                logger.LogDebug(
+                    "BotのVoiceStateUpdateを受信しました。GuildId={GuildId}, ChannelId={ChannelId}, HasSessionId={HasSessionId}",
+                    eventArgs.Guild.Id,
+                    eventArgs.Channel?.Id,
+                    !string.IsNullOrEmpty(eventArgs.SessionId));
+            }
+
+            return Task.CompletedTask;
+        };
+        client.VoiceServerUpdated += (_, eventArgs) =>
+        {
+            logger.LogDebug(
+                "VoiceServerUpdateを受信しました。GuildId={GuildId}, HasEndpoint={HasEndpoint}, HasVoiceToken={HasVoiceToken}",
+                eventArgs.Guild.Id,
+                !string.IsNullOrEmpty(eventArgs.Endpoint),
+                !string.IsNullOrEmpty(eventArgs.VoiceToken));
+            return Task.CompletedTask;
+        };
         client.SocketClosed += (_, eventArgs) =>
         {
             logger.LogWarning("Discord接続が切断されました。Code={Code}", eventArgs.CloseCode);
