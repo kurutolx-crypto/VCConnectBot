@@ -1,9 +1,31 @@
 ﻿using System.Buffers.Binary;
+using System.Reflection;
+using DSharpPlus;
+using DSharpPlus.SlashCommands;
 using VCConnectBot.Audio;
 using VCConnectBot.Configuration;
+using VCConnectBot.Discord;
 using VCConnectBot.Relay;
 
 namespace VCConnectBot.Tests;
+
+public sealed class RelayCommandsTests
+{
+    [Theory]
+    [InlineData("from")]
+    [InlineData("to")]
+    public void ConnectChannelOptionsOnlyAllowVoiceChannels(string parameterName)
+    {
+        var parameter = typeof(RelayCommands)
+            .GetMethod(nameof(RelayCommands.ConnectAsync))!
+            .GetParameters()
+            .Single(parameter => parameter.Name == parameterName);
+
+        var channelTypes = parameter.GetCustomAttribute<ChannelTypesAttribute>()?.ChannelTypes;
+
+        Assert.Equal(new[] { ChannelType.Voice }, channelTypes);
+    }
+}
 
 public sealed class RelayConnectionTests
 {

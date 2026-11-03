@@ -26,8 +26,10 @@ public sealed class RelayCommands : ApplicationCommandModule
     [SlashCommand("connect", "2つのボイスチャンネル間の中継を開始します。")]
     public async Task ConnectAsync(
         InteractionContext context,
-        [Option("from", "中継元ボイスチャンネル")] DiscordChannel from,
-        [Option("to", "中継先ボイスチャンネル")] DiscordChannel to,
+        [Option("from", "中継元ボイスチャンネル")]
+        [ChannelTypes(ChannelType.Voice)] DiscordChannel from,
+        [Option("to", "中継先ボイスチャンネル")]
+        [ChannelTypes(ChannelType.Voice)] DiscordChannel to,
         [Option("direction", "中継方向")] DiscordRelayDirection direction = DiscordRelayDirection.OneWay)
     {
         if (from.Type != ChannelType.Voice || to.Type != ChannelType.Voice)
