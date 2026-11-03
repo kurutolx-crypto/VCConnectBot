@@ -73,10 +73,22 @@ public sealed class VoiceRelayService : IAsyncDisposable
                     throw new InvalidOperationException("Bot A/Bが接続されていません。");
                 }
 
+                logger.LogInformation(
+                    "Bot AのVC接続を開始します。GuildId={GuildId}, ChannelId={ChannelId}",
+                    from.Guild.Id,
+                    from.Id);
                 fromConnection = await botHost.BotA.GetVoiceNext().ConnectAsync(from);
                 session.SetBotAConnected(true);
+                logger.LogInformation("Bot AのVC接続が完了しました。ChannelId={ChannelId}", from.Id);
+
+                logger.LogInformation(
+                    "Bot BのVC接続を開始します。GuildId={GuildId}, ChannelId={ChannelId}",
+                    to.Guild.Id,
+                    to.Id);
                 toConnection = await botHost.BotB.GetVoiceNext().ConnectAsync(to);
                 session.SetBotBConnected(true);
+                logger.LogInformation("Bot BのVC接続が完了しました。ChannelId={ChannelId}", to.Id);
+
                 session.MarkRunning();
                 AttachReceiveHandler(fromConnection, fromToQueue, isFromSide: true);
                 if (toFromQueue is not null)
