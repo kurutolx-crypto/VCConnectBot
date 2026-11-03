@@ -90,7 +90,7 @@ public sealed class DiscordBotHost : IHostedService, IAsyncDisposable
             Token = token,
             TokenType = TokenType.Bot,
             Intents = DiscordIntents.AllUnprivileged | DiscordIntents.GuildVoiceStates,
-            MinimumLogLevel = Microsoft.Extensions.Logging.LogLevel.Information
+            MinimumLogLevel = Microsoft.Extensions.Logging.LogLevel.Debug
         });
         client.UseVoiceNext(new VoiceNextConfiguration
         {
